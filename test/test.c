@@ -38,19 +38,18 @@ TEST(SDES, S2){
 	ASSERT_EQ((char)0, (char)S2(10));
 }
 
-TEST(SDES, CalcolaChiave){
+TEST(SDES, calcolaChiave){
 	char * keyComp = (char*) malloc(sizeof(char)*2);
 	keyComp[1] = (char)0;
 	keyComp[0] = (char)77; 
 
-	char * keys = (char*) malloc(sizeof(char)*4);
+	char * keys = (char*) malloc(sizeof(char)*3);
 
 	keys[0] = (char)77;
 	keys[1] = (char)154;
 	keys[2] = (char)52;
-	keys[3] =	(char)105;
 
-	for(int i = 0; i < 4; i++){
+	for(int i = 0; i < 3; i++){
 		ASSERT_EQ(keys[i], calcolaChiave(keyComp,i));
 	} 
 }

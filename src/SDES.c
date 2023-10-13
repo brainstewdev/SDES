@@ -35,23 +35,31 @@ char* cifra(char * plaintext, char * key){
 	
 	return cifr;
 }
-
+// funzione utilizzata per calcolare il modulo tra a e b
+int mod(int a, int b)
+{
+    int r = a % b;
+    return r < 0 ? r + b : r;
+}
+// funzione utilizzata per calcolare la chiave
 char calcolaChiave(char *key, int i){
 	char chiave_it = 0;
-	int pos;
-	char v;
-  	for (int j = 0; j < 8; j++) {
-		pos = (i+j)%8;
-		
-		if (pos == 0){
-			// accedo al primo bit memorizzato in key[1]
-			v = !!((key[1] << j) & 0x80);
+	// se pos è 8 allora copio il LSB da key[1]
+	// altrimenti copio il bit di posizione pos da key[0]
+	char v; // il valore nel quale conservo il bit da copiare
+	int pos_da_copiare = 0;
+	for(int j = 0; j < 8; j++){
+		pos_da_copiare = mod((j-i),9);
+		if(pos_da_copiare == 8){
+			// metto nel j-esimo bit il bit che si trova nel LSB di k[1]
+			v = (char)key[1]&1;
 		}else{
-			// accedo al bit chiesto in key[0]
-			v = !!(((key[0] << pos) & 0x80)>>j);
+			// metto nel j-esimo bit il bit che si trova nella posizione pos_da_copiare di k[0]
+			v = (char)(key[0] & (1 << pos_da_copiare));
 		}
-		chiave_it = chiave_it | (v << (7-j));
- 	}
+		chiave_it = chiave_it | (v<<(i));
+	}
+
 	return chiave_it;
 }
 // esegue la iesima iterazione
